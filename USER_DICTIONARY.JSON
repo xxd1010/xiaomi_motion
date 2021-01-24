@@ -1,0 +1,46 @@
+{
+  "1": {
+    "sckey": "",
+    "user": "",
+    "passwd": "",
+    "step_ls": [
+      {
+        "stage": 1,
+        "hour_range": "0-11",
+        "step_range": "0-4000"
+      },
+      {
+        "stage": 2,
+        "hour_range": "12-17",
+        "step_range": "4100-10000"
+      },
+      {
+        "stage": 3,
+        "hour_range": "17-24",
+        "step_range": "6000-14000"
+      }
+    ]
+  },
+  "2": {
+    "sckey": "",
+    "user": "",
+    "passwd": "",
+    "step_ls": [
+      {
+        "stage": 1,
+        "hour_range": "0-11",
+        "step_range": "0-6000"
+      },
+      {
+        "stage": 2,
+        "hour_range": "12-17",
+        "step_range": "6000-12000"
+      },
+      {
+        "stage": 3,
+        "hour_range": "17-24",
+        "step_range": "12000-16000"
+      }
+    ]
+  }
+}
