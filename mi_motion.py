@@ -5,6 +5,7 @@ import json
 import random
 import re
 import time
+import string
 
 import pretty_errors
 import requests
@@ -89,7 +90,7 @@ def login(user, password):
 # 主函数
 
 
-def main(user, passwd, step, sckey):
+def main(user, passwd, step):
     user = str(user)
     password = str(passwd)
     step = str(step)
@@ -129,10 +130,10 @@ def main(user, passwd, step, sckey):
 
     response = requests.post(url, data=data, headers=head).json()
     # print(response)
-    result = f"小米运动通知:\n{now} 账号（{user.replace(user[3:7], '*'*4)}）修改步数（{step}）" + \
-        response['message']
+    result = f"###小米运动通知:\n{now}\n账号({user.replace(user[3:7], '*'*4)})\n####修改步数({step})" + \
+        response['message'] + "\n"
+
     print(result)
-    push_wx(sckey, result)
     return result
 
 # 获取时间戳
@@ -167,7 +168,7 @@ def push_wx(sckey, desp=""):
     else:
         server_url = f"https://sc.ftqq.com/{sckey}.send"
         params = {
-            "text": '>>>>>通知<<<<<',
+            "text": '##通知',
             "desp": desp
         }
 
@@ -181,6 +182,8 @@ def push_wx(sckey, desp=""):
 
 
 if __name__ == "__main__":
+    sckey = ''
+    push_text = ''
     i = len(user_dictionary)
     while(i):
         # ServerChan
@@ -208,5 +211,7 @@ if __name__ == "__main__":
                         int(step_array[0]), int(step_array[1])))
                 elif str(step_array) == '0':
                     step = ''
-        main(user, passwd, step, sckey)
+        result = main(user, passwd, step)
+        push_text = push_text + result
         i = i - 1
+    push_wx(sckey, push_text)
