@@ -180,11 +180,14 @@ def push_wx(sckey, desp=""):
             print(f"{now} 推送失败：{json_data['errno']}({json_data['errmsg']})")
 
 # 取十个随机数，再取平均值
+
+
 def getRandom(start, end):
     List = []
     for i in range(10):
         List.append(randint(start, end))
     return int(sum(List)/10)
+
 
 if __name__ == "__main__":
     sckey = ''
@@ -212,7 +215,8 @@ if __name__ == "__main__":
             if status == step_list[j]['status']:
                 step_array = step_list[j]['step_range'].split('-')
                 if len(step_array) == 2:
-                    step = str(getRandom(int(step_array[0]), int(step_array[1])))
+                    step = str(
+                        getRandom(int(step_array[0]), int(step_array[1])))
                 elif str(step_array) == '0':
                     step = ''
         result = main(user, passwd, step)
