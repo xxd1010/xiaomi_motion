@@ -132,7 +132,6 @@ def main(user, passwd, step):
     # print(response)
     result = f"###小米运动通知:\n{now}\n账号({user.replace(user[3:7], '*'*4)})\n####修改步数({step})" + \
         response['message'] + "\n"
-
     print(result)
     return result
 
@@ -168,7 +167,7 @@ def push_wx(sckey, desp=""):
     else:
         server_url = f"https://sc.ftqq.com/{sckey}.send"
         params = {
-            "text": '##通知',
+            "text": '通知',
             "desp": desp
         }
 
@@ -180,12 +179,18 @@ def push_wx(sckey, desp=""):
         else:
             print(f"{now} 推送失败：{json_data['errno']}({json_data['errmsg']})")
 
+# 取十个随机数，再取平均值
+def getRandom(start, end):
+    List = []
+    for i in range(10):
+        List.append(randint(start, end))
+    return int(sum(List)/10)
 
 if __name__ == "__main__":
     sckey = ''
     push_text = ''
-    i = len(user_dictionary)
-    while(i):
+    for i in range(len(user_dictionary)):
+        i = i+1
         # ServerChan
         sckey = user_dictionary[str(i)]['sckey']
         if str(sckey) == '0':
@@ -195,23 +200,21 @@ if __name__ == "__main__":
         # 登录密码
         passwd = user_dictionary[str(i)]['passwd']
         # 要修改的步数，直接输入想要修改的步数值，留空为随机步数
-        step_ls = user_dictionary[str(i)]['step_ls']
+        step_list = user_dictionary[str(i)]['step_list']
         step = ''
-        # 默认stage为 len(step_ls)
-        stage = len(step_ls)
-        for j in range(len(step_ls)):
-            s_h, e_h = step_ls[j]['hour_range'].split('-')
+        # 默认stage为 len(step_list)
+        status = len(step_list)
+        for j in range(status):
+            s_h, e_h = step_list[j]['hour_range'].split('-')
             if Hour > int(s_h) and Hour < int(e_h):
-                stage = step_ls[j]['stage']
-        for j in range(len(step_ls)):
-            if stage == step_ls[j]['stage']:
-                step_array = step_ls[j]['step_range'].split('-')
+                status = step_list[j]['status']
+        for j in range(status):
+            if status == step_list[j]['status']:
+                step_array = step_list[j]['step_range'].split('-')
                 if len(step_array) == 2:
-                    step = str(random.randint(
-                        int(step_array[0]), int(step_array[1])))
+                    step = str(getRandom(int(step_array[0]), int(step_array[1])))
                 elif str(step_array) == '0':
                     step = ''
         result = main(user, passwd, step)
         push_text = push_text + result
-        i = i - 1
     push_wx(sckey, push_text)
